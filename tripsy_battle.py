@@ -23,35 +23,55 @@ player1_hand
 
 #TODO use random to decide which player will pick first
 rounds = 0
-while rounds < 16:
-    lead = random.choice(["player1", "player2"])  
-    if lead == "player1":
-        response_player =  "player2"
-    else:
-        response_player = "player1"
-    
+lead = random.choice(["player1", "player2"])
+while rounds < 16:  
     print(f"{lead} has been selected to go first")
-#TODO Make a function that plays a card. It takes a random card from the hand and puts in the players hand then deletes the card from the deck
+#TODO Make a function that plays a card. It takes a random card from the hand and puts in the players hand then deletes the card from the deckdef play_round(player1_hand,player2_hand):
     if lead == "player1":
         lead_hand =player1_hand
-        choice = input(f"{lead} please select a card from your hand above Play a card. Input index starting from 0") # Fix instructions at some point
+        response_player_hand = player2_hand
+        response_player = "player2"
+        query = input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck")
+        print(lead_hand)
+        choice = get_choice(lead_hand, lead)       
         lead_card = player1_hand.pop(choice)
+        lead_suit = get_suit(lead_card)
+
     
     elif lead == "player2":
-        player_2_hand = input
-        choice = input(f"{lead} please select a card from your hand above Play a card. Input index starting from 0") # Fix instructions at some point
+        lead_hand = player2_hand
+        response_player_hand = player2_hand
+        response_player = "player1"
+        query =input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck: ")           
+        print(lead_hand)
+        choice = get_choice(lead_hand, lead) 
         lead_card = player2_hand.pop(choice)
+        lead_suit = lead_card.get_suit(lead_card)
     #TODO Get value of lead card 
-    lead_card = ("Queen", "Spades")
     lead_card_value = get_value(lead_card)
-    lead_card_string = print_card(card)
-    print(f"{lead} has pulled out {lead_card_string}")
+    lead_card_string = print_card(lead_card)
+    print(f"{lead} has pulled out {lead_card_string} with a value of {lead_card_value}")
+    temp_hand = create_suit_deck(response_player_hand, lead_suit)
+    if len(temp_hand)== 0:
+        query = input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck")
+        print("You have no matching suites. Pick a card from your whole deck")
+        print(response_player_hand)
+        choice = get_choice(response_player_hand, response_player)
+        response_card = player1_hand.pop(choice)
+    else:
+        query = input(f"{lead} look away. {response_player} press anything on your keyboard + enter to see your deck")
+        print(f" This is your full hand: {response_player_hand}. \n Your may pick from cards with the lead card suit {lead_suit}. \n Here is a list of all of your options: {temp_hand}")
+        choice = get_choice(response_player_hand, response_player)
+        response_card = temp_hand.pop()
+        int = find_int(response_card,response_player_hand)
+        response_player_hand.pop(int)
 
 
-    
 
-    
 
+        
+        
+        
     rounds += 1
 
 
@@ -104,13 +124,51 @@ def print_card(card):
     """
     card_string = str(card[0] +" of "+ card[1])
     return card_string
-
+def get_suit(card):
+    """
+    Takes in card tuple and returns suit
+    """
+    return card[1]
+def create_suit_deck(deck, suit):
+    """
+    Creates A deck with selected suits
+    """
+    new_deck = []
+    for card in deck:
+        if card[1] == suit:
+            new_deck.append(card)
+    return new_deck
+def play_game():
+    pass
+def get_choice(hand, player):
+    while True:
+            try:
+                choice = int(input(f"{player} please select a card from your hand above Play a card. Input index starting from 0: "))
+                while choice > len(hand):
+                    print("Please try again. You typed an int outside of scope.")
+                    choice = int(input(f"{player} please select a card from your hand above Play a card. Input index starting from 0: "))
+                break
+            except:
+                print("please try again. You did not type a valid integer ")
+def find_int(card, hand):
+    '''
+    
+    '''
+    i = 0
+    while(i < len(hand)):
+        if hand[i] == card:
+            final_index = i
+            return i
+        else:
+            return -1
+    
+        
 card = ("Queen", "Spades")
 card[0]
 get_value(card=card)
 print_card(card= card)
-
-
+suit =get_suit(card=card)
+print(suit)
 
 # 
 #  
