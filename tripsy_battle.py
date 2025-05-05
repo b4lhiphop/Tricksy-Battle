@@ -22,9 +22,33 @@ for i in range(8):
 player1_hand
 
 #TODO use random to decide which player will pick first
-rounds = 0
+round = 0
+player1_score = 0
+player2_score = 0
 lead = random.choice(["player1", "player2"])
-while rounds < 16:  
+
+while round <= 16:
+    print(f"Round {round}")
+    winner, player1_hand, player2_hand = play_round(player1_hand, player2_hand, lead)
+    if winner == "player1": 
+        print(f" {winner} has won this round. The score is now: \n Player 1: {player1_score} \n Player 2: {player1_score}")
+        player1_score+= 1
+    elif winner == "player2":
+        print(f" {winner} has won this round. The score is now: \n Player 1: {player1_score} \n Player 2: {player1_score}")
+        player2_score += 1
+    else:
+        print(f" No one has one this round. The score is now: \n Player 1: {player1_score} \n Player 2: {player1_score}")
+    round += 1
+    lead = winner
+    
+    
+
+
+
+
+
+def play_round(player1_hand, player2_hand, lead):
+    lead = random.choice(["player1", "player2"])
     print(f"{lead} has been selected to go first")
 #TODO Make a function that plays a card. It takes a random card from the hand and puts in the players hand then deletes the card from the deckdef play_round(player1_hand,player2_hand):
     if lead == "player1":
@@ -54,10 +78,13 @@ while rounds < 16:
     temp_hand = create_suit_deck(response_player_hand, lead_suit)
     if len(temp_hand)== 0:
         query = input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck")
-        print("You have no matching suites. Pick a card from your whole deck")
+        print("You have no matching suites. Pick a card from your whole deck to discard")
         print(response_player_hand)
         choice = get_choice(response_player_hand, response_player)
         response_card = player1_hand.pop(choice)
+        print(f"You selected {response_card}. You have lost this round.")
+        winner = lead 
+        return winner, player1_hand, player2_hand
     else:
         query = input(f"{lead} look away. {response_player} press anything on your keyboard + enter to see your deck")
         print(f" This is your full hand: {response_player_hand}. \n Your may pick from cards with the lead card suit {lead_suit}. \n Here is a list of all of your options: {temp_hand}")
@@ -65,6 +92,26 @@ while rounds < 16:
         response_card = temp_hand.pop()
         int = find_int(response_card,response_player_hand)
         response_player_hand.pop(int)
+        response_card_value = get_value(response_card)
+        response_card_string = print_card(response_card)
+        print(f"You have selected {response_card} with a value of {response_card_value}")
+        winner = compare_values(lead_card_value=lead_card_value, response_card_value=response_card_value, lead= lead, response_player=response_player)
+        return winner, player1_hand, player2_hand
+
+    # compare values + get winner
+def compare_values(lead_card_value, response_card_value, lead, response_player):
+    """
+    Compares values of two cards and returns the winner of the round according to the winning suit
+    """
+    if lead_card_value > response_card_value:
+        winner == lead
+    elif lead_card < value:
+        winner = response_player
+    else:
+        winner = ""
+    
+    return winner
+     
 
 
 
@@ -72,7 +119,6 @@ while rounds < 16:
         
         
         
-    rounds += 1
 
 
 
@@ -84,12 +130,13 @@ while rounds < 16:
 
 #TODO show selected player their cards and ask them to pick a card to play
 
-def play_card():
-    """
-    This function takes 
-    """
 
     pass
+
+
+
+
+# Functions 
 def get_value(card):
     """
     This function takes a card tuple as a parameter and returns its value.
@@ -161,7 +208,8 @@ def find_int(card, hand):
             return i
         else:
             return -1
-    
+def play_round():
+    pass
         
 card = ("Queen", "Spades")
 card[0]
