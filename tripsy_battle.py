@@ -40,6 +40,9 @@ while round <= 16:
         print(f" No one has one this round. The score is now: \n Player 1: {player1_score} \n Player 2: {player1_score}")
     round += 1
     lead = winner
+    if player1_hand and player2_hand == 4:
+        deck, player1_hand, player2_hand = renew_hand(deck, player1_hand, player2_hand)
+
     
     
 
@@ -105,12 +108,13 @@ def compare_values(lead_card_value, response_card_value, lead, response_player):
     """
     if lead_card_value > response_card_value:
         winner == lead
-    elif lead_card < value:
+    elif lead_card_value < response_card_value:
         winner = response_player
     else:
         winner = ""
     
     return winner
+
      
 
 
@@ -130,8 +134,6 @@ def compare_values(lead_card_value, response_card_value, lead, response_player):
 
 #TODO show selected player their cards and ask them to pick a card to play
 
-
-    pass
 
 
 
@@ -208,9 +210,17 @@ def find_int(card, hand):
             return i
         else:
             return -1
-def play_round():
-    pass
-        
+def renew_hand(deck, player1_hand, player2_hand):
+    """
+    When each player is down to four cards,  four more cards are distributed to them and taken from the deck
+    """
+    i = 0
+    while i < 4:
+        player1_hand = deck.pop()
+        player2_hand = deck.pop()
+        i+= 1
+    return deck, player1_hand, player2_hand
+
 card = ("Queen", "Spades")
 card[0]
 get_value(card=card)
