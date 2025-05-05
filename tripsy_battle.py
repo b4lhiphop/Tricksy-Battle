@@ -26,6 +26,7 @@ round = 0
 player1_score = 0
 player2_score = 0
 lead = random.choice(["player1", "player2"])
+print(f"{lead} has been selected to go first")
 
 while round <= 16:
     print(f"Round {round}")
@@ -58,26 +59,24 @@ def play_round(player1_hand, player2_hand, lead):
         lead_hand =player1_hand
         response_player_hand = player2_hand
         response_player = "player2"
-        query = input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck")
-        print(lead_hand)
-        choice = get_choice(lead_hand, lead)       
-        lead_card = player1_hand.pop(choice)
-        lead_suit = get_suit(lead_card)
-
-    
     elif lead == "player2":
         lead_hand = player2_hand
         response_player_hand = player2_hand
         response_player = "player1"
-        query =input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck: ")           
-        print(lead_hand)
-        choice = get_choice(lead_hand, lead) 
-        lead_card = player2_hand.pop(choice)
-        lead_suit = lead_card.get_suit(lead_card)
-    #TODO Get value of lead card 
+    # Lead player chooses a card:
+    print(f"{lead} is leading this round")
+    query = input(f"{response_player} look away. {lead} Press enter on your keyboard to see your deck.")
+    print(lead_hand)
+    choice = get_choice(lead_hand, lead)       
+    lead_card = lead_hand.pop(choice)
+    lead_suit = get_suit(lead_card)
     lead_card_value = get_value(lead_card)
-    lead_card_string = print_card(lead_card)
-    print(f"{lead} has pulled out {lead_card_string} with a value of {lead_card_value}")
+    lead_card_string = lead_card_string = print_card(lead_card)
+    print(f"{lead} plays {lead_card_string} with a value of {lead_card_value}")
+
+    
+ 
+    #TODO Get value of lead card 
     temp_hand = create_suit_deck(response_player_hand, lead_suit)
     if len(temp_hand)== 0:
         query = input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck")
@@ -225,7 +224,7 @@ card = ("Queen", "Spades")
 card[0]
 get_value(card=card)
 print_card(card= card)
-suit =get_suit(card=card)
+# suit = get_suit(card)
 print(suit)
 
 # 
