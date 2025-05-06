@@ -18,25 +18,19 @@ i = 0
 for i in range(8):
     player1_hand.append(deck.pop())
     player2_hand.append(deck.pop())
-    i+= 1
 player1_hand
 
 #TODO use random to decide which player will pick first
-round = 0
+round = 1
 player1_score = 0
 player2_score = 0
 lead = random.choice(["player1", "player2"])
 print(f"{lead} has been selected to go first")
 
 while round <= 16:
-    if player1_score ==9:
-        print("The Game is Over: Player 1 Has Won. Congratulations!!")
+    game_winner = check_score(player1_score, player2_score,round)
+    if game_winner:
         break
-    elif player2_score == 9:
-        print("The game is over!! Player 1 has taken victory!! Congratulations ")
-        break
-    if player1_score:
-        pass
 
     print(f"Round: {round}")
     winner, player1_hand, player2_hand = play_round(player1_hand, player2_hand, lead)
@@ -52,12 +46,22 @@ while round <= 16:
     if deck:
         revealed_card = deck.pop()
         print(f"Revealed card from deck: {print_card(revealed_card)}")
-    if lead:
+    if winner:
        lead = winner
 
     if len(player1_hand) == 4 and len(player2_hand) == 4 and len(deck) >= 8:
         deck, player1_hand, player2_hand = renew_hand(deck, player1_hand, player2_hand)
     round += 1
+if not game_winner:
+    print(f"Final Scores:\n Player 1: {player1_score}\n Player 2:{player2_score}")
+    if player1_score > player2_score:
+            game_winner = "player1"
+            print("Player 1 won the game")
+    elif player1_score < player2_score:
+        game_winner = "player2"
+        print("Player 2 won the Game")
+    else:
+        print("The game ended in a tie")
 
     
     
@@ -79,13 +83,12 @@ def play_round(player1_hand, player2_hand, lead):
     # Lead player chooses a card:
     print(f"{lead} is leading this round")
     query = input(f"{response_player} look away. {lead} Press enter on your keyboard to see your deck.")
-    print(lead_hand)
+    print(print_hand(lead_hand))
     choice = get_choice(lead_hand, lead)       
     lead_card = lead_hand.pop(choice)
     lead_suit = get_suit(lead_card)
     lead_card_value = get_value(lead_card)
-    lead_card_string = lead_card_string = print_card(lead_card)
-    print(f"{lead} plays {lead_card_string} with a value of {lead_card_value}")
+    print(f"{lead} plays {print_card(lead_card)} with a value of {lead_card_value}")
 
     
  
@@ -94,7 +97,7 @@ def play_round(player1_hand, player2_hand, lead):
     if not temp_hand:
         query = input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck")
         print("You have no matching suites. Pick a card from your whole deck to discard")
-        print(response_player_hand)
+        print(print_hand(response_player_hand))
         choice = get_choice(response_player_hand, response_player)
         response_card = response_player_hand.pop(choice)
         print(f"{response_player} discards {print_card(response_card)}")
@@ -102,7 +105,7 @@ def play_round(player1_hand, player2_hand, lead):
         return winner, player1_hand, player2_hand
     else:
         query = input(f"{lead} look away. {response_player} press anything on your keyboard + enter to see your deck")
-        print(f"{response_player} you must follow with {lead_suit} \n Choose a Card: {temp_hand}")
+        print(f"{response_player} you must follow with {lead_suit} \n Choose a Card: {print_hand(temp_hand)}")
         choice = get_choice(temp_hand, response_player)
         response_card = temp_hand[choice]
         response_player_hand.remove(response_card)
@@ -128,32 +131,36 @@ def play_round(player1_hand, player2_hand, lead):
 
 
 # Functions 
-def check_score(player1_score, player2_score):
+def check_score(player1_score, player2_score, round):
     """
-    THis function checks each players score and prints end game functions if either player_score = 9 or if the score is 16 to 0. 
-    If the score is 16 to 0 the loser automaticlly scores 17 points as they "shoot to the moon" and the game is over
+    This function checks each players score and prints end game functions if either player_score = 9 or if the score is 16 to 0. 
+    If the score is 16 to 0 the loser automaticlly scores 17 points as they "shoot to the moon" and the game is over.
     """
-    if player1_score ==9:
+    game_winner = None
+    if player1_score >=9:
         game_winner = "player1"
         print(f"The game is over!! {game_winner} has taken victory!! Congratulations ")
-    elif player2_score == 9:
+    elif player2_score >= 9:
         game_winner = "player2"
         print(f"The game is over!! {game_winner} has taken victory!! Congratulations ")
-        game_winner = "player2"
-    if player1_score == 16 and player2_score == 0:
+    elif player1_score == 16 and player2_score == 0:
         player2_score = 17
         game_winner = "player2"
-        print(f"{game_winner} has shot to the moon!!! He now has {player2_score} points. Game Over ")
+        print(f"{game_winner} has shot to the moon!!! He now has {player2_score} points. Game Over. This is is an automatic victory for {game_winner}  ")
     elif player2_score == 16 and player1_score == 0:
         player1_score = 17
         game_winner = "player1"
-        print(f"{game_winner} has shot to the moon!!! He now has {player2_score} points. Game Over ")
+        print(f"{game_winner} has shot to the moon!!! He now has {player1_score} points. Game Over. This is an automatic victory for {game_winner} ")
+    return game_winner
+
+    
+    
 
 
 def print_hand(hand):
-    i = 1
-    for card in hand:
-        print(f"#{i}, card: {card[0]}")
+    for index, card in enumerate(hand):
+        print(f"{i}: {print_card(card)}")
+    return ""    
         
 def get_value(card):
     """
@@ -216,9 +223,10 @@ def renew_hand(deck, player1_hand, player2_hand):
     """
     When each player is down to four cards,  four more cards are distributed to them and taken from the deck
     """
-    for _ in range(4):
-        player1_hand.append(deck.pop())
-        player2_hand.append(deck.pop())
+    if len(deck) >= 8:
+        for _ in range(4):
+            player1_hand.append(deck.pop())
+            player2_hand.append(deck.pop())
     return deck, player1_hand, player2_hand
 
 card = ("Queen", "Spades")
