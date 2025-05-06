@@ -1,4 +1,113 @@
 import random
+# Functions 
+def check_score(player1_score, player2_score):
+    """
+    This function checks each players score and prints end game functions if either player_score = 9 or if the score is 16 to 0. 
+    If the score is 16 to 0 the loser automaticlly scores 17 points as they "shoot to the moon" and the game is over.
+    """
+    game_winner = None
+    if player1_score >=9 and player2_score >= 1:
+        game_winner = "player1"
+        print(f"The game is over!! {game_winner} has taken victory!! Congratulations ")
+    elif player2_score >= 9 and player1_score >= 1:
+        game_winner = "player2"
+        print(f"The game is over!! {game_winner} has taken victory!! Congratulations ")
+    elif player1_score == 16 and player2_score == 0:
+        player2_score = 17
+        game_winner = "player2"
+        print(f"{game_winner} has shot to the moon!!! He now has {player2_score} points. Game Over. This is is an automatic victory for {game_winner}  ")
+    elif player2_score == 16 and player1_score == 0:
+        player1_score = 17
+        game_winner = "player1"
+        print(f"{game_winner} has shot to the moon!!! He now has {player1_score} points. Game Over. This is an automatic victory for {game_winner} ")
+    return game_winner
+player_1_score = 16
+player_2_score = 0
+round = 17
+game_winner = check_score(player_1_score, player_2_score)
+    
+    
+
+
+def print_hand(hand):
+    for i, card in enumerate(hand):
+        print(f"{i}: {print_card(card)}")
+    
+        
+def get_value(card):
+    """
+    This function takes a card tuple as a parameter and returns its value.
+    """
+    if "Ace" in card[0]:
+        return 1
+    elif "2" in card[0]:
+        return 2 
+    elif "3" in card[0]:
+        return 3
+    elif "4" in card[0]:
+        return 4
+    elif "5" in card[0]:
+        return 5
+    elif "6" in card[0]:
+        return 6
+    elif "7" in card[0]:
+        return 7
+    elif "8" in card[0]:
+        return 8
+    elif "9" in card[0]:
+        return 9
+    elif "10" in card[0]:
+        return 10
+    elif "Jack" in card[0]:
+        return 11
+    elif "Queen" in card[0]:
+        return 12
+def print_card(card):
+    """
+    Takes in card tuple and returns a string for the card to be printed
+    """
+    card_string = str(card[0] +" of "+ card[1])
+    return card_string
+def get_suit(card):
+    """
+    Takes in card tuple and returns suit
+    """
+    return str(card[1])
+def create_suit_deck(deck, suit):
+    """
+    Creates A deck with selected suits
+    """
+    new_deck = []
+    for card in deck:
+        if card[1] == suit:
+            new_deck.append(card)
+    return new_deck
+def get_choice(hand, player):
+    while True:
+            try:
+                choice = int(input(f"{player} please select a card from your hand above Play a card. Input index starting from 0: "))
+                if choice >= 0 and choice < len(hand):
+                    return choice
+                print("invalid index")
+            except ValueError:
+                print("Invalid input. Please type in a number")
+def renew_hand(deck, player1_hand, player2_hand):
+    """
+    When each player is down to four cards,  four more cards are distributed to them and taken from the deck
+    """
+    if len(deck) >= 8:
+        for _ in range(4):
+            player1_hand.append(deck.pop())
+            player2_hand.append(deck.pop())
+    return deck, player1_hand, player2_hand
+
+card = ("Queen", "Spades")
+card[0]
+get_value(card=card)
+print_card(card= card)
+suit = get_suit(card)
+print(suit)
+
 #TODO Make a Deck of 48 Cards Using A dictionary using a list wit tuples
 
 cards = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9","10", "Jack", "Queen"]
@@ -26,14 +135,8 @@ player1_score = 0
 player2_score = 0
 lead = random.choice(["player1", "player2"])
 print(f"{lead} has been selected to go first")
-#test----------------------------------
-player_1_score = 16
-player_2_score = 0
-game_winner = check_score(player1_score, player2_score,round)
-#--------------------------------------
-
 while round <= 16:
-    game_winner = check_score(player1_score, player2_score,round)
+    game_winner = check_score(player1_score, player2_score)
     if game_winner:
         break
 
@@ -136,117 +239,7 @@ def play_round(player1_hand, player2_hand, lead):
 
 
 
-# Functions 
-def check_score(player1_score, player2_score, round):
-    """
-    This function checks each players score and prints end game functions if either player_score = 9 or if the score is 16 to 0. 
-    If the score is 16 to 0 the loser automaticlly scores 17 points as they "shoot to the moon" and the game is over.
-    """
-    game_winner = None
-    if player1_score >=9:
-        game_winner = "player1"
-        print(f"The game is over!! {game_winner} has taken victory!! Congratulations ")
-    elif player2_score >= 9:
-        game_winner = "player2"
-        print(f"The game is over!! {game_winner} has taken victory!! Congratulations ")
-    elif player1_score == 16 and player2_score == 0:
-        player2_score = 17
-        game_winner = "player2"
-        print(f"{game_winner} has shot to the moon!!! He now has {player2_score} points. Game Over. This is is an automatic victory for {game_winner}  ")
-    elif player2_score == 16 and player1_score == 0:
-        player1_score = 17
-        game_winner = "player1"
-        print(f"{game_winner} has shot to the moon!!! He now has {player1_score} points. Game Over. This is an automatic victory for {game_winner} ")
-    return game_winner
-player_1_score = 16
-player_2_score = 0
-round = 17
-game_winner = check_score(player1_score, player2_score,round)
-    
-    
 
-
-def print_hand(hand):
-    for i, card in enumerate(hand):
-        print(f"{i}: {print_card(card)}")
-    
-        
-def get_value(card):
-    """
-    This function takes a card tuple as a parameter and returns its value.
-    """
-    if "Ace" in card[0]:
-        return 1
-    elif "2" in card[0]:
-        return 2 
-    elif "3" in card[0]:
-        return 3
-    elif "4" in card[0]:
-        return 4
-    elif "5" in card[0]:
-        return 5
-    elif "6" in card[0]:
-        return 6
-    elif "7" in card[0]:
-        return 7
-    elif "8" in card[0]:
-        return 8
-    elif "9" in card[0]:
-        return 9
-    elif "10" in card[0]:
-        return 10
-    elif "Jack" in card[0]:
-        return 11
-    elif "Queen" in card[0]:
-        return 12
-def print_card(card):
-    """
-    Takes in card tuple and returns a string for the card to be printed
-    """
-    card_string = str(card[0] +" of "+ card[1])
-    return card_string
-def get_suit(card):
-    """
-    Takes in card tuple and returns suit
-    """
-    return str(card[1])
-def create_suit_deck(deck, suit):
-    """
-    Creates A deck with selected suits
-    """
-    new_deck = []
-    for card in deck:
-        if card[1] == suit:
-            new_deck.append(card)
-    return new_deck
-def get_choice(hand, player):
-    while True:
-            try:
-                choice = int(input(f"{player} please select a card from your hand above Play a card. Input index starting from 0: "))
-                if choice >= 0 and choice < len(hand):
-                    return choice
-                print("invalid index")
-            except ValueError:
-                print("Invalid input. Please type in a number")
-def renew_hand(deck, player1_hand, player2_hand):
-    """
-    When each player is down to four cards,  four more cards are distributed to them and taken from the deck
-    """
-    if len(deck) >= 8:
-        for _ in range(4):
-            player1_hand.append(deck.pop())
-            player2_hand.append(deck.pop())
-    return deck, player1_hand, player2_hand
-
-card = ("Queen", "Spades")
-card[0]
-get_value(card=card)
-print_card(card= card)
-suit = get_suit(card)
-print(suit)
-
-# 
-#  
 
 
 
