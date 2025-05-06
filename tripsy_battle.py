@@ -29,19 +29,22 @@ lead = random.choice(["player1", "player2"])
 print(f"{lead} has been selected to go first")
 
 while round <= 16:
-    print(f"Round {round}")
+    print(f"Round: {round}")
     winner, player1_hand, player2_hand = play_round(player1_hand, player2_hand, lead)
-    if winner == "player1": 
-        print(f" {winner} has won this round. The score is now: \n Player 1: {player1_score} \n Player 2: {player1_score}")
-        player1_score+= 1
-    elif winner == "player2":
-        print(f" {winner} has won this round. The score is now: \n Player 1: {player1_score} \n Player 2: {player1_score}")
-        player2_score += 1
+    if winner == "player1":
+        player1_score += 1
+    elif winner == "player2""
+        player2_score
+    print(f"Scores: Player 1: {player1_score}, Player 2: {player2_score}")
+    if deck:
+        revealed_card = deck.pop()
+        print(f"Revealed card: {print_card(revealed_card)}")
+    if lead:
+        winner = lead
     else:
-        print(f" No one has one this round. The score is now: \n Player 1: {player1_score} \n Player 2: {player1_score}")
-    round += 1
-    lead = winner
-    if player1_hand and player2_hand == 4:
+        lead = lead
+
+    if len(player1_hand) == 4 and len(player2_hand) == 4 and len(deck) >= 8:
         deck, player1_hand, player2_hand = renew_hand(deck, player1_hand, player2_hand)
 
     
@@ -52,7 +55,6 @@ while round <= 16:
 
 
 def play_round(player1_hand, player2_hand, lead):
-    lead = random.choice(["player1", "player2"])
     print(f"{lead} has been selected to go first")
 #TODO Make a function that plays a card. It takes a random card from the hand and puts in the players hand then deletes the card from the deckdef play_round(player1_hand,player2_hand):
     if lead == "player1":
@@ -61,8 +63,8 @@ def play_round(player1_hand, player2_hand, lead):
         response_player = "player2"
     elif lead == "player2":
         lead_hand = player2_hand
-        response_player_hand = player2_hand
-        response_player = "player1"
+        response_player_hand = player1_hand
+        response_player = "player2"
     # Lead player chooses a card:
     print(f"{lead} is leading this round")
     query = input(f"{response_player} look away. {lead} Press enter on your keyboard to see your deck.")
@@ -78,56 +80,31 @@ def play_round(player1_hand, player2_hand, lead):
  
     #TODO Get value of lead card 
     temp_hand = create_suit_deck(response_player_hand, lead_suit)
-    if len(temp_hand)== 0:
+    if not temp_hand:
         query = input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck")
         print("You have no matching suites. Pick a card from your whole deck to discard")
         print(response_player_hand)
         choice = get_choice(response_player_hand, response_player)
         response_card = player1_hand.pop(choice)
-        print(f"You selected {response_card}. You have lost this round.")
+        print(f"{response_player} discards {print_card(response_card)}")
         winner = lead 
-        return winner, player1_hand, player2_hand
     else:
         query = input(f"{lead} look away. {response_player} press anything on your keyboard + enter to see your deck")
-        print(f" This is your full hand: {response_player_hand}. \n Your may pick from cards with the lead card suit {lead_suit}. \n Here is a list of all of your options: {temp_hand}")
+        print(f"{response_player} you must follow with {lead_suit} \n Choose a Card: {response_player_hand}")
         choice = get_choice(response_player_hand, response_player)
-        response_card = temp_hand.pop()
-        int = find_int(response_card,response_player_hand)
-        response_player_hand.pop(int)
+        response_card = temp_hand[choice]
+        response_player_hand.remove(response_card)
         response_card_value = get_value(response_card)
-        response_card_string = print_card(response_card)
-        print(f"You have selected {response_card} with a value of {response_card_value}")
-        winner = compare_values(lead_card_value=lead_card_value, response_card_value=response_card_value, lead= lead, response_player=response_player)
-        return winner, player1_hand, player2_hand
+        print(f"{response_player} plays {response_card} with a value {response_card_value}")        
+    if lead_card_value > response_card_value:
+        winner = lead
+    elif lead_card_value < response_card_value:
+            winner = response_player
+    else:
+            winner = None
+    return winner, player1_hand, player2_hand
 
     # compare values + get winner
-def compare_values(lead_card_value, response_card_value, lead, response_player):
-    """
-    Compares values of two cards and returns the winner of the round according to the winning suit
-    """
-    if lead_card_value > response_card_value:
-        winner == lead
-    elif lead_card_value < response_card_value:
-        winner = response_player
-    else:
-        winner = ""
-    
-    return winner
-
-     
-
-
-
-
-        
-        
-        
-
-
-
-
-    
-
 
 #TODO use random to decide which player will pick first
 
@@ -138,6 +115,12 @@ def compare_values(lead_card_value, response_card_value, lead, response_player):
 
 
 # Functions 
+
+def print_hand(hand):
+    i = 1
+    for card in hand:
+        print(f"#{i}, card: {card[0]}")
+        
 def get_value(card):
     """
     This function takes a card tuple as a parameter and returns its value.
@@ -186,38 +169,22 @@ def create_suit_deck(deck, suit):
         if card[1] == suit:
             new_deck.append(card)
     return new_deck
-def play_game():
-    pass
 def get_choice(hand, player):
     while True:
             try:
                 choice = int(input(f"{player} please select a card from your hand above Play a card. Input index starting from 0: "))
-                while choice > len(hand):
-                    print("Please try again. You typed an int outside of scope.")
-                    choice = int(input(f"{player} please select a card from your hand above Play a card. Input index starting from 0: "))
-                break
-            except:
-                print("please try again. You did not type a valid integer ")
-def find_int(card, hand):
-    '''
-    
-    '''
-    i = 0
-    while(i < len(hand)):
-        if hand[i] == card:
-            final_index = i
-            return i
-        else:
-            return -1
+                if choice >= 0 and choice < len(hand):
+                    return choice
+                print("invalid index")
+            except ValueError:
+                print("Invalid input. Please type in a number")
 def renew_hand(deck, player1_hand, player2_hand):
     """
     When each player is down to four cards,  four more cards are distributed to them and taken from the deck
     """
-    i = 0
-    while i < 4:
-        player1_hand = deck.pop()
-        player2_hand = deck.pop()
-        i+= 1
+    for _ in range(4):
+        player1_hand.append(deck.pop())
+        player2_hand.append(deck.pop())
     return deck, player1_hand, player2_hand
 
 card = ("Queen", "Spades")
