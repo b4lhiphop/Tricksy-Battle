@@ -27,7 +27,7 @@ player2_score = 0
 lead = random.choice(["player1", "player2"])
 print(f"{lead} has been selected to go first")
 
-while round <= 16:
+while round <= 17:
     game_winner = check_score(player1_score, player2_score,round)
     if game_winner:
         break
@@ -105,7 +105,8 @@ def play_round(player1_hand, player2_hand, lead):
         return winner, player1_hand, player2_hand
     else:
         query = input(f"{lead} look away. {response_player} press anything on your keyboard + enter to see your deck")
-        print(f"{response_player} you must follow with {lead_suit} \n Choose a Card: {print_hand(temp_hand)}")
+        print(f"{response_player} you must follow with {lead_suit} \n Choose a Card:")
+        print_hand(temp_hand)
         choice = get_choice(temp_hand, response_player)
         response_card = temp_hand[choice]
         response_player_hand.remove(response_card)
@@ -158,9 +159,9 @@ def check_score(player1_score, player2_score, round):
 
 
 def print_hand(hand):
-    for index, card in enumerate(hand):
+    for i, card in enumerate(hand):
         print(f"{i}: {print_card(card)}")
-    return ""    
+    
         
 def get_value(card):
     """
