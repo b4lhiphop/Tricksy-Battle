@@ -26,8 +26,13 @@ player1_score = 0
 player2_score = 0
 lead = random.choice(["player1", "player2"])
 print(f"{lead} has been selected to go first")
+#test----------------------------------
+player_1_score = 16
+player_2_score = 0
+game_winner = check_score(player1_score, player2_score,round)
+#--------------------------------------
 
-while round <= 17:
+while round <= 16:
     game_winner = check_score(player1_score, player2_score,round)
     if game_winner:
         break
@@ -82,8 +87,8 @@ def play_round(player1_hand, player2_hand, lead):
         response_player = "player1"
     # Lead player chooses a card:
     print(f"{lead} is leading this round")
-    query = input(f"{response_player} look away. {lead} Press enter on your keyboard to see your deck.")
-    print(print_hand(lead_hand))
+    query = input(f"{response_player} look away. {lead} Press enter on your keyboard to see your deck. ")
+    print_hand(lead_hand)
     choice = get_choice(lead_hand, lead)       
     lead_card = lead_hand.pop(choice)
     lead_suit = get_suit(lead_card)
@@ -95,16 +100,16 @@ def play_round(player1_hand, player2_hand, lead):
     #TODO Get value of lead card 
     temp_hand = create_suit_deck(response_player_hand, lead_suit)
     if not temp_hand:
-        query = input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck")
+        query = input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck ")
         print("You have no matching suites. Pick a card from your whole deck to discard")
-        print(print_hand(response_player_hand))
+        print_hand(response_player_hand)
         choice = get_choice(response_player_hand, response_player)
         response_card = response_player_hand.pop(choice)
         print(f"{response_player} discards {print_card(response_card)}")
         winner = lead 
         return winner, player1_hand, player2_hand
     else:
-        query = input(f"{lead} look away. {response_player} press anything on your keyboard + enter to see your deck")
+        query = input(f"{lead} look away. {response_player} press anything on your keyboard + enter to see your deck: ")
         print(f"{response_player} you must follow with {lead_suit} \n Choose a Card:")
         print_hand(temp_hand)
         choice = get_choice(temp_hand, response_player)
@@ -153,7 +158,10 @@ def check_score(player1_score, player2_score, round):
         game_winner = "player1"
         print(f"{game_winner} has shot to the moon!!! He now has {player1_score} points. Game Over. This is an automatic victory for {game_winner} ")
     return game_winner
-
+player_1_score = 16
+player_2_score = 0
+round = 17
+game_winner = check_score(player1_score, player2_score,round)
     
     
 
