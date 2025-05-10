@@ -21,10 +21,10 @@ def check_score(player1_score, player2_score):
         game_winner = "player1"
         print(f"{game_winner} has shot to the moon!!! He now has {player1_score} points. Game Over. This is an automatic victory for {game_winner} ")
     return game_winner
-player_1_score = 16
-player_2_score = 0
-round = 17
-game_winner = check_score(player_1_score, player_2_score)
+# player_1_score = 16
+# player_2_score = 0
+# round = 17
+# game_winner = check_score(player_1_score, player_2_score)
     
     
 
@@ -100,13 +100,62 @@ def renew_hand(deck, player1_hand, player2_hand):
             player1_hand.append(deck.pop())
             player2_hand.append(deck.pop())
     return deck, player1_hand, player2_hand
+def play_round(player1_hand, player2_hand, lead):
+#TODO Make a function that plays a card. It takes a random card from the hand and puts in the players hand then deletes the card from the deckdef play_round(player1_hand,player2_hand):
+    if lead == "player1":
+        lead_hand =player1_hand
+        response_player_hand = player2_hand
+        response_player = "player2"
+    elif lead == "player2":
+        lead_hand = player2_hand
+        response_player_hand = player1_hand
+        response_player = "player1"
+    # Lead player chooses a card:
+    print(f"{lead} is leading this round")
+    query = input(f"{response_player} look away. {lead} Press enter on your keyboard to see your deck. ")
+    print_hand(lead_hand)
+    choice = get_choice(lead_hand, lead)       
+    lead_card = lead_hand.pop(choice)
+    lead_suit = get_suit(lead_card)
+    lead_card_value = get_value(lead_card)
+    print(f"{lead} plays {print_card(lead_card)} with a value of {lead_card_value}")
 
-card = ("Queen", "Spades")
-card[0]
-get_value(card=card)
-print_card(card= card)
-suit = get_suit(card)
-print(suit)
+    
+ 
+    #TODO Get value of lead card 
+    temp_hand = create_suit_deck(response_player_hand, lead_suit)
+    if not temp_hand:
+        query = input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck ")
+        print("You have no matching suites. Pick a card from your whole deck to discard")
+        print_hand(response_player_hand)
+        choice = get_choice(response_player_hand, response_player)
+        response_card = response_player_hand.pop(choice)
+        print(f"{response_player} discards {print_card(response_card)}")
+        winner = lead 
+        return winner, player1_hand, player2_hand
+    else:
+        query = input(f"{lead} look away. {response_player} press anything on your keyboard + enter to see your deck: ")
+        print(f"{response_player} you must follow with {lead_suit} \n Choose a Card:")
+        print_hand(temp_hand)
+        choice = get_choice(temp_hand, response_player)
+        response_card = temp_hand[choice]
+        response_player_hand.remove(response_card)
+        response_card_value = get_value(response_card)
+        print(f"{response_player} plays {response_card} with a value {response_card_value}")        
+    if lead_card_value > response_card_value:
+        winner = lead
+    elif lead_card_value < response_card_value:
+        winner = response_player
+    else:
+        winner = None
+    
+    return winner, player1_hand, player2_hand
+# card = ("Queen", "Spades")
+# card[0]
+# get_value(card=card)
+# print_card(card= card)
+# suit = get_suit(card)
+# print(suit)
 
 #TODO Make a Deck of 48 Cards Using A dictionary using a list wit tuples
 
@@ -178,56 +227,7 @@ if not game_winner:
 
 
 
-def play_round(player1_hand, player2_hand, lead):
-#TODO Make a function that plays a card. It takes a random card from the hand and puts in the players hand then deletes the card from the deckdef play_round(player1_hand,player2_hand):
-    if lead == "player1":
-        lead_hand =player1_hand
-        response_player_hand = player2_hand
-        response_player = "player2"
-    elif lead == "player2":
-        lead_hand = player2_hand
-        response_player_hand = player1_hand
-        response_player = "player1"
-    # Lead player chooses a card:
-    print(f"{lead} is leading this round")
-    query = input(f"{response_player} look away. {lead} Press enter on your keyboard to see your deck. ")
-    print_hand(lead_hand)
-    choice = get_choice(lead_hand, lead)       
-    lead_card = lead_hand.pop(choice)
-    lead_suit = get_suit(lead_card)
-    lead_card_value = get_value(lead_card)
-    print(f"{lead} plays {print_card(lead_card)} with a value of {lead_card_value}")
 
-    
- 
-    #TODO Get value of lead card 
-    temp_hand = create_suit_deck(response_player_hand, lead_suit)
-    if not temp_hand:
-        query = input(f"{response_player} look away. {lead} press anything on your keyboard + enter to see your deck ")
-        print("You have no matching suites. Pick a card from your whole deck to discard")
-        print_hand(response_player_hand)
-        choice = get_choice(response_player_hand, response_player)
-        response_card = response_player_hand.pop(choice)
-        print(f"{response_player} discards {print_card(response_card)}")
-        winner = lead 
-        return winner, player1_hand, player2_hand
-    else:
-        query = input(f"{lead} look away. {response_player} press anything on your keyboard + enter to see your deck: ")
-        print(f"{response_player} you must follow with {lead_suit} \n Choose a Card:")
-        print_hand(temp_hand)
-        choice = get_choice(temp_hand, response_player)
-        response_card = temp_hand[choice]
-        response_player_hand.remove(response_card)
-        response_card_value = get_value(response_card)
-        print(f"{response_player} plays {response_card} with a value {response_card_value}")        
-    if lead_card_value > response_card_value:
-        winner = lead
-    elif lead_card_value < response_card_value:
-        winner = response_player
-    else:
-        winner = None
-    
-    return winner, player1_hand, player2_hand
 
     # compare values + get winner
 
