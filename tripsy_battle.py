@@ -229,14 +229,6 @@ if not game_winner:
 
 
 
-    # compare values + get winner
-
-#TODO use random to decide which player will pick first
-
-#TODO show selected player their cards and ask them to pick a card to play
-
-
-
 
 
 
