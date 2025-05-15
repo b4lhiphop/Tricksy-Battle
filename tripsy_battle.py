@@ -1,4 +1,8 @@
 import random
+
+# Constants
+opening = "#################################################\nWELCOME TO MY GAME\n"
+
 # Functions 
 def check_score(player1_score, player2_score):
     """
@@ -62,17 +66,20 @@ def get_value(card):
         return 11
     elif "Queen" in card[0]:
         return 12
+
 def print_card(card):
     """
     Takes in card tuple and returns a string for the card to be printed
     """
     card_string = str(card[0] +" of "+ card[1])
     return card_string
+
 def get_suit(card):
     """
     Takes in card tuple and returns suit
     """
     return str(card[1])
+
 def create_suit_deck(deck, suit):
     """
     Creates A deck with selected suits
@@ -82,6 +89,7 @@ def create_suit_deck(deck, suit):
         if card[1] == suit:
             new_deck.append(card)
     return new_deck
+
 def get_choice(hand, player):
     while True:
             try:
@@ -95,11 +103,11 @@ def renew_hand(deck, player1_hand, player2_hand):
     """
     When each player is down to four cards,  four more cards are distributed to them and taken from the deck
     """
-    if len(deck) >= 8:
-        for _ in range(4):
-            player1_hand.append(deck.pop())
-            player2_hand.append(deck.pop())
+    for _ in range(4):
+        player1_hand.append(deck.pop())
+        player2_hand.append(deck.pop())
     return deck, player1_hand, player2_hand
+
 def play_round(player1_hand, player2_hand, lead):
 #TODO Make a function that plays a card. It takes a random card from the hand and puts in the players hand then deletes the card from the deckdef play_round(player1_hand,player2_hand):
     if lead == "player1":
@@ -165,10 +173,10 @@ deck = []
 for card in cards:
     for suit in suits:
         deck.append((card,suit))
-print(deck)
+# print(deck)
 #TODO Make a list with thier current hand
 random.shuffle(deck)
-print(deck)
+# print(deck)
 player1_hand = []
 player2_hand = []
 i = 0
@@ -183,6 +191,7 @@ round = 1
 player1_score = 0
 player2_score = 0
 lead = random.choice(["player1", "player2"])
+print(opening)
 print(f"{lead} has been selected to go first")
 while round <= 16:
     game_winner = check_score(player1_score, player2_score)
