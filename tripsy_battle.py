@@ -1,9 +1,23 @@
 import random
+import time
+import matplotlib.pyplot as plt
+
 
 # Constants
 opening = "#################################################\nWELCOME TO MY GAME\n"
 
+
+
 # Functions 
+def game_countdown():
+    print("################################################# GET READY ################################")
+    count = 1
+    while (count <= 3):
+        print(f"################################################# {count} ########################################")
+        count += 1
+        time.sleep(1)
+        
+
 def check_score(player1_score, player2_score):
     """
     This function checks each players score and prints end game functions if either player_score = 9 or if the score is 16 to 0. 
@@ -158,6 +172,17 @@ def play_round(player1_hand, player2_hand, lead):
         winner = None
     
     return winner, player1_hand, player2_hand
+def plot_final_scores(player_1_score, player_2_score):
+    players = ["player1","player2"]
+    scores = [player1_score, player2_score]
+    colors = ["red", "blue"]
+    plt.bar(players, scores, color = colors)
+    plt.title("Final Scores")
+    plt.ylim(0, 17)
+    plt.show()
+    plt.figure(figsize=(6,4))
+    plt.grid(axis = "y", linestyle = "-", alpha = 0.7)
+# plot_final_scores(9, 4)
 # card = ("Queen", "Spades")
 # card[0]
 # get_value(card=card)
@@ -191,7 +216,9 @@ round = 1
 player1_score = 0
 player2_score = 0
 lead = random.choice(["player1", "player2"])
+time.sleep(1)
 print(opening)
+game_countdown()
 print(f"{lead} has been selected to go first")
 while round <= 16:
     game_winner = check_score(player1_score, player2_score)
@@ -199,6 +226,7 @@ while round <= 16:
         break
 
     print(f"Round: {round}")
+    time.sleep(1)
     winner, player1_hand, player2_hand = play_round(player1_hand, player2_hand, lead)
     if winner == "player1":
         print(f"{winner} has won round: {round}")
@@ -208,7 +236,7 @@ while round <= 16:
         player2_score+=1
     else:
         print(f"Round {round} ended in a tie. ")
-    print(f"Scores: Player 1: {player1_score}, Player 2: {player2_score}")
+    print(f"Scores: Player 1: {player1_score}, Player 2: {player2_score} \n ################################")
     if deck:
         revealed_card = deck.pop()
         print(f"Revealed card from deck: {print_card(revealed_card)}")
@@ -218,8 +246,9 @@ while round <= 16:
     if len(player1_hand) == 4 and len(player2_hand) == 4 and len(deck) >= 8:
         deck, player1_hand, player2_hand = renew_hand(deck, player1_hand, player2_hand)
     round += 1
+    time.sleep(1)
 if not game_winner:
-    print(f"Final Scores:\n Player 1: {player1_score}\n Player 2:{player2_score}")
+    print(f"Final Scores:\n Player 1: {player1_score}\n Player 2:{player2_score}\n ##################################")
     if player1_score > player2_score:
             game_winner = "player1"
             print("Player 1 won the game")
@@ -228,6 +257,8 @@ if not game_winner:
         print("Player 2 won the Game")
     else:
         print("The game ended in a tie")
+    plot_final_scores(player1_score,player2_score)
+
 
     
     
