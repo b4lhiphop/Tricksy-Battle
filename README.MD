@@ -6,7 +6,20 @@ For INST 126 I created a card game called Tricksy Battle. This game requires two
 
  More detailed rules are detailed below:
 ### Rules for “Tricksy Battle”
-** Two Players Are Required
+**Two Players Are Required**
 
 ### How to run Game
-** Enter python tripsy_battle.py
+**Clone Repository using git**
+**Enter python tripsy_battle.py into terminal**
+**Follow instructions to play game**
+
+### Special Features
+**time library**
+1. Used in game_countdown() function to create countdown effect.
+2. Used throughout the game to give users time to see scores and slow down the functioning of the game which makes it more user friendly.
+**random library**
+1. Used in the begginng of the game to decide which player will lead first.
+2. Used to shuffle the deck at the beggining of the game
+**Matplotlib library**
+1. Used at the end of the game to plot to represent the scores of each player on a graph
+
